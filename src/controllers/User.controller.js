@@ -1,10 +1,10 @@
 import { User } from "../models/User.model.js";
 
 export const getUserInfo = async (req, res) => {
-  const { id } = req.params;
+  const { username } = req.params;
   try {
     const user = await User.findOne({
-      where: { id },
+      where: { username },
       attributes: [
         "full_name",
         "username",
