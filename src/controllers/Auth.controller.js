@@ -4,9 +4,23 @@ import { Op } from "sequelize";
 
 export const register = async (req, res) => {
   try {
-    const { username, email, password, confirmPassword } = req.body;
+    const {
+      first_name,
+      last_name,
+      username,
+      email,
+      password,
+      confirmPassword,
+    } = req.body;
 
-    if (!username || !email || !password || !confirmPassword) {
+    if (
+      !first_name ||
+      !last_name ||
+      !username ||
+      !email ||
+      !password ||
+      !confirmPassword
+    ) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -29,7 +43,16 @@ export const register = async (req, res) => {
 
     const hash = await bcrypt.hash(password, 10);
 
-    await User.create({ username, email, password: hash });
+    const full_name = first_name + " " + last_name;
+
+    await User.create({
+      full_name,
+      username,
+      email,
+      password: hash,
+      image_url:
+        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+    });
 
     return res.status(201).json({ message: "Registration successful" });
   } catch (e) {

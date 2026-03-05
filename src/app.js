@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/User.routes.js";
 import postRoutes from "./routes/Post.routes.js";
+import userRoutes from "./routes/User.routes.js";
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
 
 app.use("/v1/auth", authRoutes);
 app.use("/v1/posts", postRoutes);
+app.use("/v1/users", userRoutes);
 
 app.listen(3000, () => {
   console.log("servidor corriendo en http://localhost:3000");

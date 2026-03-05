@@ -19,7 +19,7 @@ export const getAllPosts = async (req, res) => {
   }
 };
 
-export const getAllPostById = async (req, res) => {
+export const getAllPostByUserId = async (req, res) => {
   const { user_id } = req.params;
   try {
     const posts = await Post.findAll(

@@ -30,6 +30,10 @@ export const User = db.define(
       type: DataTypes.TEXT,
       allowNull: false,
     },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   },
   { timestamps: false },
 );
