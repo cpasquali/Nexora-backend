@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { User } from "../models/User.model.js";
 import { Op } from "sequelize";
+import jwt from "jsonwebtoken";
 
 export const register = async (req, res) => {
   try {
@@ -83,7 +84,18 @@ export const login = async (req, res) => {
     if (!isMatch)
       return res.status(404).json({ message: "Incorrect credentials" });
 
-    return res.status(200).json({ message: "Ok", user });
+    const payload = {
+      id: user.id,
+      username: user.username,
+      full_name: user.full_name,
+      image_url: user.image_url,
+    };
+
+    const token = jwt.sign(payload, "clave_super_secreta");
+
+    return res
+      .status(200)
+      .json({ message: "ENTRASTE A TU CUENTA CON ECITO", token, type: "OK" });
   } catch (e) {
     console.log(e.message);
     return res.status(500).json({ message: "Internal server error" });

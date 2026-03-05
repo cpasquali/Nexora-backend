@@ -7,8 +7,8 @@ import {
 
 const routes = express.Router();
 
-routes.get("/", getAllPosts);
+routes.route("/").get(getAllPosts).post(createNewPost);
 
-routes.route("/user/:user_id").get(getAllPostByUserId).post(createNewPost);
+routes.route("/user/:user_id").get(getAllPostByUserId);
 
 export default routes;

@@ -1,4 +1,5 @@
 import { Post, User } from "../models/Associations.js";
+import jwt from "jsonwebtoken";
 
 export const getAllPosts = async (req, res) => {
   try {
@@ -43,7 +44,10 @@ export const getAllPostByUserId = async (req, res) => {
 };
 
 export const createNewPost = async (req, res) => {
-  const { user_id } = req.params;
+  const token = req.headers.authorization;
+  const decoded = jwt.verify(token.split(" ")[1], "clave_super_secreta");
+  const user_id = decoded.id;
+
   try {
     const { content } = req.body;
 
