@@ -1,4 +1,4 @@
-import { DataTypes } from "sequelize";
+import { DataTypes, TimeoutError } from "sequelize";
 import { db } from "../db.js";
 
 export const Post = db.define(
@@ -17,6 +17,10 @@ export const Post = db.define(
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+    },
+    created_at: {
+      type: DataTypes.TIME,
+      allowNull: true,
     },
   },
   { timestamps: false },

@@ -55,7 +55,9 @@ export const register = async (req, res) => {
         "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
     });
 
-    return res.status(201).json({ message: "Registration successful" });
+    return res
+      .status(201)
+      .json({ message: "Registration successful", type: "OK" });
   } catch (e) {
     console.log(e.message);
     return res.status(500).json({ message: "Internal server error" });
@@ -95,7 +97,7 @@ export const login = async (req, res) => {
 
     return res
       .status(200)
-      .json({ message: "ENTRASTE A TU CUENTA CON ECITO", token, type: "OK" });
+      .json({ message: "You have successfully logged in.", token, type: "OK" });
   } catch (e) {
     console.log(e.message);
     return res.status(500).json({ message: "Internal server error" });
