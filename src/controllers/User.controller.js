@@ -11,6 +11,7 @@ export const getUserInfo = async (req, res) => {
         "created_at",
         "image_url",
         "description",
+        "banner_image_url",
       ],
     });
 

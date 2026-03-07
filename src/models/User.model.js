@@ -34,6 +34,10 @@ export const User = db.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    banner_image_url: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
   { timestamps: false },
 );

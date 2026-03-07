@@ -53,6 +53,8 @@ export const register = async (req, res) => {
       password: hash,
       image_url:
         "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+      banner_image_url:
+        "https://wallpapers.com/images/hd/dark-blue-plain-0ynuj666cdl9fne9.jpg",
     });
 
     return res
