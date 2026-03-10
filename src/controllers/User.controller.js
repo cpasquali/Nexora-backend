@@ -26,6 +26,25 @@ export const getUserInfo = async (req, res) => {
   }
 };
 
+export const getUserByUsername = async (req, res) => {
+  try {
+    const { username } = req.query;
+    const user = await User.findAll({
+      where: { username: { [Op.startsWith]: username } },
+      attributes: ["full_name", "username", "image_url"],
+    });
+    if (!user)
+      return res
+        .status(404)
+        .json({ user: [], message: "User not found", error: "USER_NOT_FOUND" });
+
+    return res.status(200).json({ user });
+  } catch (e) {
+    console.log(e.message);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 export const getRandomUsers = async (req, res) => {
   const token = req.headers.authorization;
   const decoded = jwt.verify(token.split(" ")[1], "clave_super_secreta");
