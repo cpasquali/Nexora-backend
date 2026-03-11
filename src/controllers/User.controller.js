@@ -31,7 +31,7 @@ export const getUserByUsername = async (req, res) => {
     const { username } = req.query;
     const user = await User.findAll({
       where: { username: { [Op.startsWith]: username } },
-      attributes: ["full_name", "username", "image_url"],
+      attributes: ["full_name", "username", "image_url", "description"],
     });
     if (!user)
       return res
@@ -52,7 +52,7 @@ export const getRandomUsers = async (req, res) => {
 
   try {
     const users = await User.findAll({
-      limit: 3,
+      limit: 6,
       order: db.random(),
       where: {
         id: {
