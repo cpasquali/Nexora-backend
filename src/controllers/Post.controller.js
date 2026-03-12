@@ -10,6 +10,7 @@ function timeAgo(date) {
   const days = Math.floor(seconds / 86400);
   const weeks = Math.floor(seconds / 604800);
 
+  if (seconds === 0) return "now";
   if (seconds < 60) return `${seconds}s`;
   if (minutes < 60) return `${minutes}m`;
   if (hours < 24) return `${hours}h`;
@@ -85,7 +86,10 @@ export const createNewPost = async (req, res) => {
 
     const newPost = await Post.create({ content, user_id });
 
-    return res.status(201).json({ message: "Post created", newPost });
+    return res.status(201).json({
+      message: "Post created",
+      newPost: { ...newPost.toJSON(), time_ago: timeAgo(new Date()) },
+    });
   } catch (e) {
     console.log(e.message);
     return res.status(500).json({ message: "Internal server error" });
