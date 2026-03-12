@@ -22,6 +22,10 @@ export const Comment = db.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    created_at: {
+      type: DataTypes.TIME,
+      allowNull: true,
+    },
   },
   { timestamps: false },
 );
