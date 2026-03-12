@@ -54,6 +54,9 @@ export const createComment = async (req, res) => {
   try {
     const { content } = req.body;
 
+    if (!content)
+      return res.status(404).json({ message: "All fields are required" });
+
     const newComment = await Comment.create({
       content,
       post_id,
