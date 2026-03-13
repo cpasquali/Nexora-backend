@@ -82,7 +82,9 @@ export const createNewPost = async (req, res) => {
     const { content } = req.body;
 
     if (!content)
-      return res.status(400).json({ message: "All fields are required" });
+      return res
+        .status(400)
+        .json({ message: "All fields are required", type: "EMPTY_INPUTS" });
 
     const newPost = await Post.create({ content, user_id });
 

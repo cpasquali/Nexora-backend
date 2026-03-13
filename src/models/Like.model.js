@@ -7,10 +7,12 @@ export const Like = db.define(
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      primaryKey: true,
     },
     post_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      primaryKey: true,
     },
   },
   { timestamps: false },

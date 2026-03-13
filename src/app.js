@@ -4,6 +4,7 @@ import authRoutes from "./routes/User.routes.js";
 import postRoutes from "./routes/Post.routes.js";
 import userRoutes from "./routes/User.routes.js";
 import commentsRoutes from "./routes/Comments.routes.js";
+import likesRoutes from "./routes/Likes.routes.js";
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use("/v1/auth", authRoutes);
 app.use("/v1/posts", postRoutes);
 app.use("/v1/users", userRoutes);
 app.use("/v1/comments", commentsRoutes);
+app.use("/v1/likes", likesRoutes);
 
 app.listen(3000, () => {
   console.log("servidor corriendo en http://localhost:3000");
