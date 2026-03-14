@@ -15,7 +15,6 @@ export const toggleLike = async (req, res) => {
       const { dataValues } = await PostLikes.destroy({
         where: { user_id, post_id },
       });
-      console.log("borrado: ", dataValues);
 
       const newPostCantLikes = await PostLikes.count({ where: { post_id } });
       return res.status(200).json({
@@ -27,7 +26,6 @@ export const toggleLike = async (req, res) => {
     }
 
     const { dataValues } = await PostLikes.create({ user_id, post_id });
-    console.log("nuevo: ", dataValues);
 
     const newPostCantLikes = await PostLikes.count({ where: { post_id } });
     return res.status(201).json({
@@ -36,8 +34,9 @@ export const toggleLike = async (req, res) => {
       postLike: dataValues,
       type: "added",
     });
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
+  } catch (e) {
+    console.log(e.message);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -50,7 +49,8 @@ export const getUserPostLike = async (req, res) => {
       return res.status(200).json({ likedPosts: [] });
 
     return res.status(200).json({ likedPosts });
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
+  } catch (e) {
+    console.log(e.message);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };

@@ -20,8 +20,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/v1/auth", authRoutes);
-app.use("/v1/posts", postRoutes);
 app.use("/v1/users", userRoutes);
+app.use("/v1/posts", postRoutes);
 app.use("/v1/comments", commentsRoutes);
 app.use("/v1/likes", postLikesRoutes);
 
