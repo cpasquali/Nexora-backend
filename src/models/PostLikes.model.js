@@ -1,8 +1,8 @@
 import { DataTypes } from "sequelize";
 import { db } from "../db.js";
 
-export const Like = db.define(
-  "likes",
+export const PostLikes = db.define(
+  "posts_likes",
   {
     user_id: {
       type: DataTypes.INTEGER,

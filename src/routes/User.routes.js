@@ -5,6 +5,7 @@ import {
   getUserByUsername,
   getUserInfo,
 } from "../controllers/User.controller.js";
+import { getUserPostLike } from "../controllers/PostLikes.controller.js";
 
 const routes = express.Router();
 
@@ -12,6 +13,7 @@ routes.post("/register", register);
 routes.post("/login", login);
 routes.get("/random", getRandomUsers);
 routes.get("/:username", getUserInfo);
+routes.get("/:user_id/likes", getUserPostLike);
 
 routes.get("/", getUserByUsername);
 
