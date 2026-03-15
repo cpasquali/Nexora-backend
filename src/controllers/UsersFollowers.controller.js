@@ -1,3 +1,4 @@
+import { User } from "../models/Associations.js";
 import { UsersFollowers } from "../models/UsersFollowers.model.js";
 import jwt from "jsonwebtoken";
 
@@ -5,14 +6,18 @@ export const toggleFollower = async (req, res) => {
   const token = req.headers.authorization;
   const decoded = jwt.verify(token.split(" ")[1], "clave_super_secreta");
   const id_user_follower = decoded.id;
-  const { id_user_following } = req.body;
+  const { username } = req.params;
   try {
+    const userFollowing = await User.findOne({ where: { username } });
+
+    const id_user_following = userFollowing.dataValues.id;
+
     const existingFollowing = await UsersFollowers.findOne({
       where: { id_user_follower, id_user_following },
     });
 
     if (existingFollowing) {
-      const { dataValues } = await UsersFollowers.destroy({
+      await UsersFollowers.destroy({
         where: { id_user_follower, id_user_following },
       });
       const newCantFollowers = await UsersFollowers.count({
@@ -22,7 +27,7 @@ export const toggleFollower = async (req, res) => {
       return res.status(201).json({
         message: "Follower removed",
         newCantFollowers,
-        userFollower: dataValues,
+        userFollower: existingFollowing.dataValues,
         type: "removed",
       });
     }

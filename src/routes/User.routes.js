@@ -20,6 +20,6 @@ routes.get("/random", getRandomUsers);
 routes.get("/:username", getUserInfo);
 routes.get("/:user_id/likes", getUserPostLike);
 routes.get("/follow/:id_user_follower", UserFollowingList);
-routes.post("/follow/:id_user_following", toggleFollower);
+routes.post("/follow/:username", toggleFollower);
 
 export default routes;
