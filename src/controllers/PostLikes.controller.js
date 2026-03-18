@@ -12,7 +12,7 @@ export const toggleLike = async (req, res) => {
     });
 
     if (existingLike) {
-      const { dataValues } = await PostLikes.destroy({
+      await PostLikes.destroy({
         where: { user_id, post_id },
       });
 
@@ -20,7 +20,7 @@ export const toggleLike = async (req, res) => {
       return res.status(200).json({
         message: "Like removed",
         newPostCantLikes,
-        postLike: dataValues,
+        postLike: existingLike,
         type: "removed",
       });
     }
@@ -31,7 +31,7 @@ export const toggleLike = async (req, res) => {
     return res.status(201).json({
       message: "Like added",
       newPostCantLikes,
-      postLike: dataValues,
+      postLike: { ...dataValues, post_id: Number(dataValues.post_id) },
       type: "added",
     });
   } catch (e) {

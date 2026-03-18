@@ -1,4 +1,4 @@
-import { Post, PostLikes, User } from "../models/Associations.js";
+import { Comment, Post, PostLikes, User } from "../models/Associations.js";
 import jwt from "jsonwebtoken";
 
 function timeAgo(date) {
@@ -32,11 +32,13 @@ export const getAllPosts = async (req, res) => {
     const posts = await Promise.all(
       postsDb.map(async (post) => {
         const likes = await PostLikes.count({ where: { post_id: post.id } });
+        const comments = await Comment.count({ where: { post_id: post.id } });
 
         return {
           ...post.toJSON(),
           time_ago: timeAgo(post.created_at),
           cant_likes: likes,
+          cant_comments: comments,
         };
       }),
     );
@@ -69,11 +71,13 @@ export const getAllPostByUsername = async (req, res) => {
     const posts = await Promise.all(
       postsDb.map(async (post) => {
         const likes = await PostLikes.count({ where: { post_id: post.id } });
+        const comments = await Comment.count({ where: { post_id: post.id } });
 
         return {
           ...post.toJSON(),
           time_ago: timeAgo(post.created_at),
           cant_likes: likes,
+          cant_comments: comments,
         };
       }),
     );

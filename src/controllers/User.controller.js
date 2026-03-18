@@ -39,7 +39,7 @@ export const getUserByUsername = async (req, res) => {
     const { username } = req.query;
     const user = await User.findAll({
       where: { username: { [Op.startsWith]: username } },
-      attributes: ["full_name", "username", "image_url", "description"],
+      attributes: ["id", "full_name", "username", "image_url", "description"],
     });
     if (!user)
       return res
