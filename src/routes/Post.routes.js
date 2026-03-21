@@ -5,10 +5,13 @@ import {
   createNewPost,
 } from "../controllers/Post.controller.js";
 import { createComment } from "../controllers/comments.controller.js";
+import multer from "multer";
 
 const routes = express.Router();
 
-routes.route("/").get(getAllPosts).post(createNewPost);
+const upload = multer({ dest: "uploads/" });
+
+routes.route("/").get(getAllPosts).post(upload.single("file"), createNewPost);
 
 routes.route("/user/:username").get(getAllPostByUsername);
 

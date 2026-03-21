@@ -22,6 +22,10 @@ export const Post = db.define(
       type: DataTypes.TIME,
       allowNull: true,
     },
+    image_url: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
   },
   { timestamps: false },
 );
