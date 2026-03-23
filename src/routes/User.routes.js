@@ -10,6 +10,11 @@ import {
   toggleFollower,
   UserFollowingList,
 } from "../controllers/UsersFollowers.controller.js";
+import {
+  getNotifications,
+  updateNotifications,
+  deleteNotification,
+} from "../controllers/Notifications.controller.js";
 
 const routes = express.Router();
 
@@ -21,5 +26,8 @@ routes.get("/:username", getUserInfo);
 routes.get("/:user_id/likes", getUserPostLike);
 routes.get("/follow/:id_user_follower", UserFollowingList);
 routes.post("/follow/:username", toggleFollower);
+routes.get("/:user_id/notifications", getNotifications);
+routes.put("/:user_id/notifications", updateNotifications);
+routes.delete("/:user_id/notifications/:notification_id", deleteNotification);
 
 export default routes;

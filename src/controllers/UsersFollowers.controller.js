@@ -1,5 +1,6 @@
 import { User } from "../models/Associations.js";
 import { UsersFollowers } from "../models/UsersFollowers.model.js";
+import { Notifications } from "../models/Associations.js";
 import jwt from "jsonwebtoken";
 
 export const toggleFollower = async (req, res) => {
@@ -9,6 +10,9 @@ export const toggleFollower = async (req, res) => {
   const { username } = req.params;
   try {
     const userFollowing = await User.findOne({ where: { username } });
+    const userFollower = await User.findOne({
+      where: { id: id_user_follower },
+    });
 
     const id_user_following = userFollowing.dataValues.id;
 
@@ -39,6 +43,14 @@ export const toggleFollower = async (req, res) => {
 
     const newCantFollowers = await UsersFollowers.count({
       where: { id_user_follower },
+    });
+
+    await Notifications.create({
+      user_id: id_user_following,
+      actor_id: id_user_follower,
+      type: "follow",
+      message: `${userFollower.dataValues.username} has started following you`,
+      is_read: false,
     });
 
     return res.status(201).json({
