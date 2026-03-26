@@ -76,3 +76,35 @@ export const getRandomUsers = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const updateUsers = async (req, res) => {
+  try {
+    const { username, full_name } = req.body;
+
+    let updatedsInputs = {};
+
+    if (!username || !full_name) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    if (username && !full_name) {
+      await User.update({ username }, { where: { id } });
+      updatedsInputs = { ...updatedsInputs, username };
+    }
+
+    if (!username && full_name) {
+      await User.update({ full_name }, { where: { id } });
+      updatedsInputs = { ...updatedsInputs, full_name };
+    }
+
+    if (username && full_name) {
+      await User.update({ username, full_name }, { where: { id } });
+      updatedsInputs = { username, full_name };
+    }
+
+    return res.status(200).json({ message: "User update", updatedsInputs });
+  } catch (e) {
+    console.log(e.message);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
