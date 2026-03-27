@@ -4,6 +4,7 @@ import {
   getRandomUsers,
   getUserByUsername,
   getUserInfo,
+  updateUsers,
 } from "../controllers/User.controller.js";
 import { getUserPostLike } from "../controllers/PostLikes.controller.js";
 import {
@@ -18,7 +19,7 @@ import {
 
 const routes = express.Router();
 
-routes.get("/", getUserByUsername);
+routes.route("/").get(getUserByUsername).put(updateUsers);
 routes.post("/register", register);
 routes.post("/login", login);
 routes.get("/random", getRandomUsers);

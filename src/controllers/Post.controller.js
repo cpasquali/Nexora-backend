@@ -1,6 +1,7 @@
 import { Comment, Post, PostLikes, User } from "../models/Associations.js";
 import jwt from "jsonwebtoken";
 import cloudinary from "../cloudinary.js";
+import fs from "fs/promises";
 
 function timeAgo(date) {
   const now = new Date();
@@ -110,6 +111,8 @@ export const createNewPost = async (req, res) => {
         .json({ message: "All fields are required", type: "EMPTY_INPUTS" });
 
     const image_url = result ? result.secure_url : null;
+
+    fs.unlink(req.file.path);
 
     const newPost = await Post.create({
       content,

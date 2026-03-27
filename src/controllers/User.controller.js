@@ -78,13 +78,19 @@ export const getRandomUsers = async (req, res) => {
 };
 
 export const updateUsers = async (req, res) => {
+  const token = req.headers.authorization;
+  const decoded = jwt.verify(token.split(" ")[1], "clave_super_secreta");
+  const id = decoded.id;
+
   try {
     const { username, full_name } = req.body;
 
     let updatedsInputs = {};
 
-    if (!username || !full_name) {
-      return res.status(400).json({ message: "All fields are required" });
+    if (!username && !full_name) {
+      return res.status(400).json({
+        message: "At least one field (username or full_name) is required",
+      });
     }
 
     if (username && !full_name) {
