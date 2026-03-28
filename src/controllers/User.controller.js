@@ -2,7 +2,9 @@ import { User } from "../models/User.model.js";
 import { db } from "../db.js";
 import jwt from "jsonwebtoken";
 import { Op } from "sequelize";
+import fs from "fs/promises";
 import { UsersFollowers } from "../models/UsersFollowers.model.js";
+import cloudinary from "../cloudinary.js";
 
 export const getUserInfo = async (req, res) => {
   const { username } = req.params;
@@ -83,30 +85,36 @@ export const updateUsers = async (req, res) => {
   const id = decoded.id;
 
   try {
-    const { username, full_name } = req.body;
+    const { username, full_name, description } = req.body;
+    const inputValues = {
+      username: username,
+      full_name: full_name,
+      description: description,
+    };
+
+    const image_url = req.file
+      ? await cloudinary.uploader.upload(req?.file?.path)
+      : null;
+
+    const result = req.file ? image_url.secure_url : null;
+
+    console.log(result);
+
+    fs.unlink(req.file.path);
 
     let updatedsInputs = {};
 
-    if (!username && !full_name) {
-      return res.status(400).json({
-        message: "At least one field (username or full_name) is required",
-      });
+    for (const key in inputValues) {
+      if (inputValues[key]) {
+        updatedsInputs[key] = inputValues[key];
+      }
     }
 
-    if (username && !full_name) {
-      await User.update({ username }, { where: { id } });
-      updatedsInputs = { ...updatedsInputs, username };
+    if (req.file) {
+      updatedsInputs["image_url"] = result;
     }
 
-    if (!username && full_name) {
-      await User.update({ full_name }, { where: { id } });
-      updatedsInputs = { ...updatedsInputs, full_name };
-    }
-
-    if (username && full_name) {
-      await User.update({ username, full_name }, { where: { id } });
-      updatedsInputs = { username, full_name };
-    }
+    await User.update(updatedsInputs, { where: { id } });
 
     return res.status(200).json({ message: "User update", updatedsInputs });
   } catch (e) {

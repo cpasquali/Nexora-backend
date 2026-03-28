@@ -1,4 +1,5 @@
 import express from "express";
+import multer from "multer";
 import { login, register } from "../controllers/Auth.controller.js";
 import {
   getRandomUsers,
@@ -19,7 +20,12 @@ import {
 
 const routes = express.Router();
 
-routes.route("/").get(getUserByUsername).put(updateUsers);
+const upload = multer({ dest: "uploads/" });
+
+routes
+  .route("/")
+  .get(getUserByUsername)
+  .put(upload.single("profile_image"), updateUsers);
 routes.post("/register", register);
 routes.post("/login", login);
 routes.get("/random", getRandomUsers);
