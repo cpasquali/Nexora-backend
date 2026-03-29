@@ -25,7 +25,13 @@ const upload = multer({ dest: "uploads/" });
 routes
   .route("/")
   .get(getUserByUsername)
-  .put(upload.single("profile_image"), updateUsers);
+  .put(
+    upload.fields([
+      { name: "image_url", maxCount: 1 },
+      { name: "banner_image_url", maxCount: 1 },
+    ]),
+    updateUsers,
+  );
 routes.post("/register", register);
 routes.post("/login", login);
 routes.get("/random", getRandomUsers);

@@ -5,6 +5,7 @@ import { Op } from "sequelize";
 import fs from "fs/promises";
 import { UsersFollowers } from "../models/UsersFollowers.model.js";
 import cloudinary from "../cloudinary.js";
+import { log } from "console";
 
 export const getUserInfo = async (req, res) => {
   const { username } = req.params;
@@ -92,26 +93,20 @@ export const updateUsers = async (req, res) => {
       description: description,
     };
 
-    const image_url = req.file
-      ? await cloudinary.uploader.upload(req?.file?.path)
-      : null;
-
-    const result = req.file ? image_url.secure_url : null;
-
-    console.log(result);
-
-    fs.unlink(req.file.path);
-
     let updatedsInputs = {};
+
+    for (const field in req.files) {
+      const file = req.files[field][0];
+      const image_url = await cloudinary.uploader.upload(file.path);
+      const result = image_url.secure_url;
+      updatedsInputs[field] = result;
+      fs.unlink(file.path);
+    }
 
     for (const key in inputValues) {
       if (inputValues[key]) {
         updatedsInputs[key] = inputValues[key];
       }
-    }
-
-    if (req.file) {
-      updatedsInputs["image_url"] = result;
     }
 
     await User.update(updatedsInputs, { where: { id } });
