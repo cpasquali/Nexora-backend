@@ -110,9 +110,11 @@ export const createNewPost = async (req, res) => {
         .status(400)
         .json({ message: "All fields are required", type: "EMPTY_INPUTS" });
 
-    const image_url = result ? result.secure_url : null;
+    const image_url = result ? result?.secure_url : null;
 
-    fs.unlink(req.file.path);
+    if (req.file) {
+      fs.unlink(req?.file?.path);
+    }
 
     const newPost = await Post.create({
       content,
