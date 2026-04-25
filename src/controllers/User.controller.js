@@ -111,7 +111,20 @@ export const updateUsers = async (req, res) => {
 
     await User.update(updatedsInputs, { where: { id } });
 
-    return res.status(200).json({ message: "User update", updatedsInputs });
+    const user = await User.findOne({ where: { id } });
+
+    const payload = {
+      id: user.dataValues.id,
+      username: user.dataValues.username,
+      full_name: user.dataValues.full_name,
+      image_url: user.dataValues.image_url,
+    };
+
+    const token = jwt.sign(payload, "clave_super_secreta");
+
+    return res
+      .status(200)
+      .json({ message: "User update", updatedsInputs, newToken: token });
   } catch (e) {
     console.log(e.message);
     return res.status(500).json({ message: "Internal server error" });
