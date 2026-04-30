@@ -131,3 +131,17 @@ export const createNewPost = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const deletePost = async (req, res) => {
+  const token = req.headers.authorization;
+  const decoded = jwt.verify(token.split(" ")[1], "clave_super_secreta");
+  const user_id = decoded.id;
+  try {
+    const { post_id } = req.params;
+    await Post.destroy({ where: { id: post_id, user_id } });
+    return res.status(200).json({ message: "Delete post" });
+  } catch (e) {
+    console.log(e.message);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
